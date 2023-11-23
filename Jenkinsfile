@@ -4,28 +4,28 @@ pipeline {
     stages {
         stage ('Clone') {
             steps {
-                git branch: 'master', url: "https://github.com/talitz/spring-petclinic-ci-cd-k8s-example.git"
+                git branch: 'master', url: "https://github.com/shegerlab2023/spring-petclinic-ci-cd-k8s-example.git"
             }
         }
 
         stage ('Artifactory Configuration') {
             steps {
                 rtServer (
-                    id: "talyi-artifactory",
-                    url: "https://talyi.jfrog.io/artifactory",
+                    id: "artifactory-server-id",
+                    url: "https://shegerlab23.jfrog.io/artifactory",
                     credentialsId: "admin.jfrog"
                 )
 
                 rtMavenResolver (
                     id: 'maven-resolver',
-                    serverId: 'talyi-artifactory',
+                    serverId: 'artifactory-server-id',
                     releaseRepo: 'libs-release',
                     snapshotRepo: 'libs-snapshot'
                 )  
                  
                 rtMavenDeployer (
                     id: 'maven-deployer',
-                    serverId: 'talyi-artifactory',
+                    serverId: 'artifactory-server-id',
                     releaseRepo: 'libs-release-local',
                     snapshotRepo: 'libs-snapshot-local',
                     threads: 6,
